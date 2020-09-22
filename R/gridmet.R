@@ -84,7 +84,7 @@ process_year_polygon <- function(rast, poly, variable) {
     date <- as.Date(temp_layer@z[[1]], origin = "1900-01-01")
     message(paste("processing",date))
     temp_layer <- disaggregate(temp_layer, fact = 5)
-    temp_df <- data.table(velox(temp_layer)$extract(poly, small = T, fun = function(x){mean(x, na.rm = T)})[,1])
+    temp_df <- as.data.table(velox(temp_layer)$extract(poly, small = T, fun = function(x){mean(x, na.rm = T)})[,1])
     names(temp_df) <- variable
     temp_df[, date := date]
     temp_df[, zip := poly$ZIP]
@@ -100,10 +100,10 @@ process_year_point <- function(rast, point, variable) {
     temp_layer <- rast[[i]]
     date <- as.Date(temp_layer@z[[1]], origin = "1900-01-01")
     message(paste("processing",date))
-    temp_df <- data.table(velox(temp_layer)$extract_point(poly, small = T, fun = function(x){mean(x, na.rm = T)})[,1])
+    temp_df <- data.table(velox(temp_layer)$extract_points(point)[,1])
     names(temp_df) <- variable
     temp_df[, date := date]
-    temp_df[, zip := poly$ZIP]
+    temp_df[, zip := point$ZIP]
     out <- rbind(out, temp_df)
   }
 
