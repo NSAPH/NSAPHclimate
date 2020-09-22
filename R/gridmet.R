@@ -29,6 +29,7 @@ get_gridmet <- function(variable,
   ## download grid met files
   ## files are small enough (~3GB per variable) that we don't need to worry about storage
   for (year in years) {
+    if (!file.exists(file.path(temp_dirname, paste0(variable, "_", year, ".nc"))))
     download_gridmet(variable, year, temp_dirname)
   }
 
@@ -93,7 +94,7 @@ process_year_polygon <- function(rast, poly, variable) {
   return(out)
 }
 
-process_year_point <- function() {
+process_year_point <- function(rast, point, variable) {
   out <- NULL
   for (i in 1:nlayers(rast)) {
     temp_layer <- rast[[i]]
