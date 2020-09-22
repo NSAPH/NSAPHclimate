@@ -4,7 +4,14 @@ Title: Functions to download and aggregate various climate sources
 Version: 0.1.0
 Author: Ben Sabath
 Maintainer: Ben Sabath <mbsabath@hsph.harvard.edu>
-Description: This package
+Description: This package downloads and aggregates Climate data to different geographies as needed
+            foor analysis by the NSAPH group
+Imports:
+    raster,
+    velox,
+    data.table,
+    ncdf4,
+    sf
 License: GPL 3 (or any later version)
 Encoding: UTF-8
 LazyData: true

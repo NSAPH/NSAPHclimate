@@ -2,3 +2,10 @@
 
 export(download_gridmet)
 export(get_gridmet)
+import(data.table)
+importFrom(ncdf4,nc_close)
+importFrom(ncdf4,nc_open)
+importFrom(raster,brick)
+importFrom(raster,disaggregate)
+importFrom(raster,nlayers)
+importFrom(velox,velox)
