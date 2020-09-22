@@ -5,20 +5,21 @@
 #'
 #' @param variable name of the variable to download
 #' @param years vector of years of data to process
-#' @param geography what geography to aggregate to, should be zip code or county
-#' @param geo_type for zip code, should points, polygons, or combined be used.
-#'     must be any value in c('polygon','point','combined') Defaults to combined.
+#' @param poly sf spatial polygoon object
+#' @param points sf spatial points object
 #' @param temp_dirname where should downloaded data be stored
-#' @param cache should the downloade data be stored
+#' @param outdir directory to store the output data
+#' @param cache should the downloaded data be stored
 #'
 #' @importFrom ncdf4 nc_open nc_close
 #' @importFrom raster brick
 #' @export
 get_gridmet <- function(variable,
                         years = 1999:2019,
-                        geography,
-                        geo_type = NULL,
+                        poly,
+                        points = NULL,
                         temp_dirname = "temp",
+                        outdir = "out",
                         cache = T) {
 
   ## Create temporary directory if it doesn't already exist
@@ -40,6 +41,14 @@ get_gridmet <- function(variable,
     nc_close(ncin)
 
     rast <- brick(paste0(temp_dirname,"/", variable, "_", year, ".nc"), varname = varname)
+    year_data <- process_year_polygon(rast, poly, variable)
+
+    if (!is.null(points)) {
+      year_data <- rbind(year_data, process_year_point(rast, point, variable)[!ZIP %in% year_data$ZIP])
+    }
+
+    fwrite(year_data, file.path(outdir, paste0(variable, "_zip_", year, ".csv")))
+
 
   }
 

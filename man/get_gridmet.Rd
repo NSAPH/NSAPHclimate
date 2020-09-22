@@ -4,22 +4,23 @@
 \alias{get_gridmet}
 \title{Download Gridmet data set, aggregate to zip code or county}
 \usage{
-get_gridmet(variable, years = 1999:2019, geography, geo_type = NULL,
-  temp_dirname = "temp", cache = T)
+get_gridmet(variable, years = 1999:2019, poly, points = NULL,
+  temp_dirname = "temp", outdir = "out", cache = T)
 }
 \arguments{
 \item{variable}{name of the variable to download}
 
 \item{years}{vector of years of data to process}
 
-\item{geography}{what geography to aggregate to, should be zip code or county}
+\item{poly}{sf spatial polygoon object}
 
-\item{geo_type}{for zip code, should points, polygons, or combined be used.
-must be any value in c('polygon','point','combined') Defaults to combined.}
+\item{points}{sf spatial points object}
 
 \item{temp_dirname}{where should downloaded data be stored}
 
-\item{cache}{should the downloade data be stored}
+\item{outdir}{directory to store the output data}
+
+\item{cache}{should the downloaded data be stored}
 }
 \description{
 Download Gridmet data set, aggregate to zip code or county
