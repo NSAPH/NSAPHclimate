@@ -44,7 +44,7 @@ get_gridmet <- function(variable,
     year_data <- process_year_polygon(rast, poly, variable)
 
     if (!is.null(points)) {
-      year_data <- rbind(year_data, process_year_point(rast, points, variable)[!ZIP %in% year_data$ZIP])
+      year_data <- rbind(year_data, process_year_point(rast, points, variable)[!zip %in% year_data$zip])
     }
 
     setkeyv(year_data, "date")
