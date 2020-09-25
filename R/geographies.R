@@ -9,6 +9,7 @@
 #' @return a list with the polygon and point shpae files foor a given year
 #' @details Assumes the folder structure in the zip_for_loop directory
 #' @importFrom sf st_as_sf read_sf
+#' @importFrom dplyr select
 #' @importFrom stringr str_c str_sub  str_subset
 #' @export
 get_year_zip_shapefiles <- function(shape_path, year) {
@@ -29,6 +30,8 @@ get_year_zip_shapefiles <- function(shape_path, year) {
   out$point <- fread(pointfile)
   out$point <- st_as_sf(out$point, coords = c("POINT_X", "POINT_Y"))
   out$poly <- read_sf(polyfile)
+  out$poly <- select(out$poly, ZIP)
+
 
 
   return(out)
