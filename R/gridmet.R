@@ -105,6 +105,8 @@ process_year_polygon <- function(rast, poly, variable) {
   return(out)
 }
 
+
+
 process_year_point <- function(rast, point, variable) {
   out <- NULL
   for (i in 1:nlayers(rast)) {

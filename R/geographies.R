@@ -9,7 +9,7 @@
 #' @return a list with the polygon and point shpae files foor a given year
 #' @details Assumes the folder structure in the zip_for_loop directory
 #' @importFrom sf st_as_sf read_sf
-#' @importFrom stringr str_c str_sub
+#' @importFrom stringr str_c str_sub  str_subset
 #' @export
 get_year_zip_shapefiles <- function(shape_path, year) {
   if (year < 2000) year <- 2000 # no files pre 2000 available, use 2000
