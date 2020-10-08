@@ -6,7 +6,7 @@ Author: Ben Sabath
 Maintainer: Ben Sabath <mbsabath@hsph.harvard.edu>
 Description: This package downloads and aggregates Climate data to different geographies as needed
             foor analysis by the NSAPH group
-Imports:
+Depends:
     raster,
     velox,
     data.table,

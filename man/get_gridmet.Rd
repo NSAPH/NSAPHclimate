@@ -5,7 +5,8 @@
 \title{Download Gridmet data set, aggregate to zip code or county}
 \usage{
 get_gridmet(variable, years = 1999:2019, poly, points = NULL,
-  temp_dirname = "temp", outdir = "out", cache = T)
+  geoid.in = "ZIP", geoid.out = "zip", temp_dirname = "temp",
+  outdir = "out", geo_name = "zip", subdivide = T, cache = T)
 }
 \arguments{
 \item{variable}{name of the variable to download}
@@ -16,11 +17,19 @@ get_gridmet(variable, years = 1999:2019, poly, points = NULL,
 
 \item{points}{sf spatial points object}
 
+\item{geoid.in}{The name of the column in the input shapefile(s) that has the ID of the geographical area}
+
+\item{geoid.out}{What to name the geographic ID in the ooutput data}
+
 \item{temp_dirname}{where should downloaded data be stored}
 
 \item{outdir}{directory to store the output data}
 
+\item{subdivide}{Should downloaded rasters be subdivided for finer area weighting?}
+
 \item{cache}{should the downloaded data be stored}
+
+\item{geoname}{What to name the geogrpahy in the output file}
 }
 \description{
 Download Gridmet data set, aggregate to zip code or county

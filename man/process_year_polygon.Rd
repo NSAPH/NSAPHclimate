@@ -4,7 +4,7 @@
 \alias{process_year_polygon}
 \title{Create a data frame of daily zip code area weighted estiamtes}
 \usage{
-process_year_polygon(rast, poly, variable)
+process_year_polygon(rast, poly, variable, geoid.in, geoid.out, subdivide)
 }
 \description{
 Create a data frame of daily zip code area weighted estiamtes
