@@ -21,17 +21,46 @@
 #' for a previous year is not available, data from the start of the year, onward is used.
 #'
 #'
-#' @importFrom lubridate leap_year
 #' @export
 seasonal_averages <- function(var, file_stem, years, geoid = "zip", outdir = "../data/out") {
   out <- NULL
   for (year in years) {
-      winter_start <- as.Date(paste0(year - 1, "-12-01"))
-      winter_end <- as.Date(paste0(year, "-03-01"))
-      summer_start <- as.Date(paste0(year, "-06-01"))
-      summer_end <- as.Date(paste0(year, "-09-01"))
+    print(year)
+    if (!file.exists(paste0(file_stem, year, ".csv"))) {
+      warning("data for ", year, " not available")
+      next()
+    }
 
+    winter_start <- as.Date(paste0(year - 1, "-12-01"))
+    winter_end <- as.Date(paste0(year, "-03-01"))
+    summer_start <- as.Date(paste0(year, "-06-01"))
+    summer_end <- as.Date(paste0(year, "-09-01"))
+    print(winter_start)
+
+    year_data <- fread(paste0(file_stem, year, ".csv"))
+    if (file.exists(paste0(file_stem, year-1, ".csv"))) {
+      year_data <- rbind(fread(paste0(file_stem, year-1, ".csv")), year_data)
+    }
+    year_data[, date := as.Date(date)]
+
+    winter_data <- year_data[date >= winter_start & date < winter_end,
+                             lapply(.SD, mean, na.rm = T),
+                             by = geoid,
+                             .SD = var]
+    setnames(winter_data, var, paste0("winter_", var))
+
+    summer_data <- year_data[date >= summer_start & date < summer_end,
+                             lapply(.SD, mean, na.rm = T),
+                             by = geoid,
+                             .SD = var]
+    setnames(summer_data, var, paste0("summer_", var))
+    year_data <- merge(summer_data, winter_data, by = geoid)
+
+    year_data[, year := year]
+    out <- rbind(out, year_data)
   }
+
+  return(out)
 }
 
 #' Calculate Annual Averages for a variable
@@ -46,6 +75,18 @@ seasonal_averages <- function(var, file_stem, years, geoid = "zip", outdir = "..
 #' @param outdir Directory to save output in.  Output data is saved there
 #'        in a file names "[var]_annual_averages.csv"
 #'
+#' @export
 annual_averages <- function(var, file_stem, years, geoid = "zip", outdir = "../data/out") {
-
+  out <- NULL
+  for (year in years) {
+    if (!file.exists(paste0(file_stem, year, ".csv"))) {
+      warning("data for ", year, " not available")
+      next()
+    }
+    year_data <- fread(paste0(file_stem, year, ".csv"))
+    year_data <- year_data[, lapply(.SD, mean, na.rm = T), by = geoid, .SDcols = var]
+    year_data[, year := year]
+    out <- rbind(out, year_data)
+  }
+  return(out)
 }
